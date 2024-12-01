@@ -1,5 +1,5 @@
 var readlineSync = require("readline-sync");
-
+var chalk = require("chalk");
 class TodoListTask {
   constructor() {
     this.objectOfTask = {};
@@ -37,10 +37,14 @@ class TodoListTask {
     return this.objectOfTask;
   }
   //Displaying the Current Tasks
-  displayTasks() {
-    console.log("Current Task List:");
+  displayTasks(currentDate) {
+    console.log(`
+ ${currentDate()}.
+ Current Task List:`);
+
     for (let key in this.objectOfTask) {
-      console.log(`${key}: ${this.objectOfTask[key]}`);
+      // console.log(`${key}: ${this.objectOfTask[key]}`);
+      console.log(chalk.blue(`${key}: ${this.objectOfTask[key]}`)); // You can use different colors (like .red, .yellow, etc.)
     }
   }
 }
@@ -52,9 +56,11 @@ class EditingTasks extends TodoListTask {
   }
 
   editTask(taskKey, newTask) {
-    //checking if newTask is not an empty  show the message to the user  otherwise  keep it empty
-    newTask = taskKey != "" ? readlineSync.question("write a new Task:") : "";
-
+    //checking if newTask is not an empty  show the message to the user  otherwise  keep it empty and check if the taskKey is a num than render the message
+    newTask =
+      taskKey != "" && !isNaN(taskKey)
+        ? readlineSync.question("write a new Task:")
+        : console.log(chalk.red(` No number was added `));
     if (this.objectOfTask[taskKey]) {
       this.objectOfTask[taskKey] = newTask;
       console.log(`Task ${taskKey} has been updated to: ${newTask}`);
@@ -69,9 +75,25 @@ class EditingTasks extends TodoListTask {
     if (this.objectOfTask.hasOwnProperty(taskKey)) {
       delete this.objectOfTask[taskKey];
       console.log(`Task ${taskKey} has been deleted.`);
+    } else {
+      taskKey = console.log(chalk.red(` No number was added `));
     }
   }
 }
+//Class to Get the currently Date
+class GetTheDate {
+  constructor() {}
+
+  getTheDate() {
+    const date = new Date();
+    return `${date.getDate()},${
+      date.getMonth() + 1
+    },${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
+  }
+}
+
+const currentDate = new GetTheDate();
+
 const taskEditing = new EditingTasks();
 
 taskEditing.editTask(
@@ -91,4 +113,4 @@ To continue without (Removing) hit [Enter].
 To (Remove) some of the  Tasks, Write the Task [number]:
     `)
 );
-taskEditing.displayTasks();
+taskEditing.displayTasks(currentDate.getTheDate);
