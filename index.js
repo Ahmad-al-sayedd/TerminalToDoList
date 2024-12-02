@@ -68,10 +68,16 @@ class TodoListTask {
     );
 
     for (let key in this.objectOfTask) {
-
-      console.log(chalk.blue.bold(`${key}: ${this.objectOfTask[key]}`));
+    
+  // converting the first letter of the key   to upperCase and then print the key and the value  
+  let task = this.objectOfTask[key];
+  let upperCaseTask = task[0].toUpperCase() + task.slice(1)
+      
+      console.log(chalk.blue.bold(`${key}: ${upperCaseTask}`));
 
     }
+
+
     console.log("####################################################");
   }
 }
@@ -98,7 +104,7 @@ class EditingTasks extends TodoListTask {
       this.objectOfTask[taskKey] = newTask;
 
 
-      console.log(`Task ${taskKey} has been updated to: ${newTask}`);
+      console.log(chalk.yellow(`Task ${taskKey} has been updated to: ${newTask}`));
 
     }
   }
@@ -115,7 +121,7 @@ class EditingTasks extends TodoListTask {
       delete this.objectOfTask[taskKey];
 
 
-      console.log(`Task ${taskKey} has been deleted.`);
+      console.log(chalk.yellow(`Task ${taskKey} has been deleted.`));
     } else {
 
       taskKey = console.log(chalk.red.bold(` No number was provided `));
@@ -144,14 +150,14 @@ class Additional {
 
   }
 
- // function that asks  if the user is satisfied and returns the callback functions (editing,removing ,displaying)
+ // function that asks  if the user is satisfied and returns the callback functions (editing,removing ,displaying) if the answer 
 
   userSatisfaction(editCallback, removeCallback, displayCallback) {
 
-    let input =readlineSync.question(` 
-  Are You satisfied with ur List task if yes hit [Enter] to show you  your final task. 
-  If no hit [n] to edit or remove some of the tasks.
-      `);
+    let input =readlineSync.question( chalk.blackBright.bold(` 
+  Are you satisfied with your task list? Press [Enter] to view your final list,
+  or type [n] to edit or remove tasks.
+      `));
 
     if (input=== '') {
 
@@ -183,23 +189,23 @@ const currentDate = new Additional();
 
 const taskEditing = new EditingTasks();
 
-taskEditing.editTask(
-  readlineSync.question(
-    `
-To continue without (Editing) hit [Enter].
-To (Edit) some of the  Tasks,Write the Task [number]:
-  `
-  ),
-  ""
-);
+// taskEditing.editTask(
+//   readlineSync.question(
+//     `
+// To continue without (Editing) hit [Enter].
+// To (Edit) some of the  Tasks,Write the Task [number]:
+//   `
+//   ),
+//   ""
+// );
 
-// taskEditing.remove(readlineSync.question("write the number of the  Task to remove"));
-taskEditing.remove(
-  readlineSync.question(`
-To continue without (Removing) hit [Enter].
-To (Remove) some of the  Tasks, Write the Task [number]:
-    `)
-);
+// // taskEditing.remove(readlineSync.question("write the number of the  Task to remove"));
+// taskEditing.remove(
+//   readlineSync.question(`
+// To continue without (Removing) hit [Enter].
+// To (Remove) some of the  Tasks, Write the Task [number]:
+//     `)
+// );
   
 currentDate.userSatisfaction
 (
