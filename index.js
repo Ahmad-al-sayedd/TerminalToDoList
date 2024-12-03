@@ -15,16 +15,25 @@ class TodoListTask {
   //  adding some instructions
   instructions() {
 
-    return chalk.bgYellow.bold("To See your Tasks List, type [Finish].");
+    return chalk.bgYellow.bold("To Stop adding tasks,type [Finish].");
 
   }
 
-  //Adding the user input value to the task list
+
+
+
+
+
+
+
+
+
+  //Adding the user input value to the task object
   addTasksToTheObj() {
 
     let userInput;
 
-    //Setting an index to be able to increment it  later when the user insert more tasks and it will be added by one later on
+    //Setting an index to be able to increment it  later when the user insert more tasks and it will be added  once every time  when the user add a task   later on
 
     let key = 1;
 
@@ -37,11 +46,13 @@ class TodoListTask {
 
         this.objectOfTask[key] = "Your Task is empty";
 
-      } else if (userInput === "Finish") {
+      } 
+      else if (userInput === "Finish") {
 
         break;
 
-      } else {
+      } 
+      else {
 
         // adding the keys and the values of object
 
@@ -55,6 +66,11 @@ class TodoListTask {
 
     return this.objectOfTask;
   }
+
+
+
+
+
   //Displaying the Current Tasks and includes  the current date as a Callback 
 
   displayTasks(currentDate) {
@@ -71,16 +87,41 @@ class TodoListTask {
     
   // converting the first letter of the key   to upperCase and then print the key and the value  
   let task = this.objectOfTask[key];
-  let upperCaseTask = task[0].toUpperCase() + task.slice(1)
-      
-      console.log(chalk.blue.bold(`${key}: ${upperCaseTask}`));
 
+
+         //checking if the task not an empty string  and not a number  if true run the upperCase method 
+
+     if(task !='' ){
+
+      let upperCaseTask = task[0].toUpperCase() + task.slice(1);
+
+     console.log(chalk.blue.bold(`${key}: ${upperCaseTask}`));
+  
+
+     }else{
+      console.log(chalk.blue.bold(`${key}: ${task}`));
+
+     }
+    
     }
 
 
     console.log("####################################################");
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///////////////////////////////////////////////////////////////Editing Class with remove and edit methods/////////////////////////////////////////////////////////////////////////
 class EditingTasks extends TodoListTask {
@@ -90,6 +131,12 @@ class EditingTasks extends TodoListTask {
     super();
 
   }
+
+
+
+
+
+
 
   editTask(taskKey, newTask) {
 
@@ -109,11 +156,17 @@ class EditingTasks extends TodoListTask {
     }
   }
 
+
+
+
+
+
+
   //Deleting Task
 
   remove(taskKey) {
 
-    //checking if object has the property wich the user gives if yes remove it if no  No number was provided
+    //checking if object has the property which the user gives if yes remove it if no  No number was provided
 
     if (this.objectOfTask.hasOwnProperty(taskKey)) {
 
@@ -134,10 +187,22 @@ class EditingTasks extends TodoListTask {
 
 
 
+
+
 //Class to Get the currently Date and ask the user if he is satisfied with his task and if not to let him change or remove some tasks 
 class Additional {
 
-  constructor() {}
+  constructor() {
+   
+  }
+
+
+
+
+
+
+
+
 
 //Getting the date and the time 
   getTheDate() {
@@ -150,22 +215,36 @@ class Additional {
 
   }
 
- // function that asks  if the user is satisfied and returns the callback functions (editing,removing ,displaying) if the answer 
+
+
+
+
+
+
+
+
+
+ // function that asks  if the user is satisfied and returns the callback functions based on  conditions (editing,removing ,displaying) if the answer 
 
   userSatisfaction(editCallback, removeCallback, displayCallback) {
 
     let input =readlineSync.question( chalk.blackBright.bold(` 
   Are you satisfied with your task list? Press [Enter] to view your final list,
-  or type [n] to edit or remove tasks.
+  or type any [Letter] or [Number]  to edit or remove tasks.
       `));
 
-    if (input=== '') {
+      //if the user hit Enter then display the task list
+
+    if (input=== '' ) {
 
 
       displayCallback(this.getTheDate);
 
 
-    } else {
+    } 
+    // if the user input was not empty then run the functions below 
+    
+    else  {
 
 
       editCallback(
@@ -182,8 +261,41 @@ class Additional {
 
 
     }
+
+
+     //Ask the user if he has some ideas or  something  what  he wasn't unhappy with  and  let the user to add his feedback
+    
+    let input2 =readlineSync.question( chalk.bgYellow.bold(` Do you have some ideas to improve our App  or  there anything you're unhappy with? if Yes type [y]`));
+
+    if(input2==='y'){
+
+
+    let userFeedback=readlineSync.question( ` Your feedback is important to us. Feel free to leave a comment! `)
+
+        
+
+  console.log(`
+  Your comment (${userFeedback})
+  will be taken in consideration,Thank You for using our App,see u again. 🤗
+        
+        `);
+       
+    }
+    else{
+      console.log('Thank You for using our App,see u again. 🤗')
+    }
+
+      
+
   }
 }
+
+
+
+
+
+
+
 
 const currentDate = new Additional();
 
